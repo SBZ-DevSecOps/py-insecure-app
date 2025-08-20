@@ -1,0 +1,26 @@
+Exemples d’exécution (en labo)
+
+cd py-insecure-app
+python -m venv .venv && . .venv/bin/activate
+pip install -r requirements.txt
+
+python app.py --initdb
+python app.py --login admin 'admin'                # SQLi possible
+python app.py --cmd "calc"                         # ou "ls; whoami"
+python app.py --hash "password"                    # MD5 faible
+python app.py --yaml poc.yaml                      # charge via yaml.load
+python app.py --pickle poc.pkl                     # unpickle non sûr
+python app.py --url https://expired.badssl.com     # verify=False
+python app.py --read ../../etc/passwd              # traversal
+python app.py --tmp
+
+
+
+
+
+Findings attendus (exemples)
+
+CWE-78, CWE-89, CWE-295, CWE-327, CWE-338, CWE-377, CWE-502, CWE-22, CWE-798.
+CVE côté SCA: PyYAML < 5.4 (CVE-2020-14343), requests 2.19.1 (GHSA-x84v-xcm2-53pg), urllib3 1.24.1 (CVE-2019-11324 / CVE-2019-11236).
+CWE-94, CWE-617, CWE-732, Zip/Tar Slip, mktemp (CWE-377), SSRF, fuites de secrets, etc.
+SAST (Semgrep/Snyk Code/Checkmarx/Sonar) devrait s’allumer largement.
